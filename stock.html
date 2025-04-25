@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>فصائل الدم وعدد الأكياس المتوفرة</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: radial-gradient(ellipse at bottom, #200000 0%, #000000 100%);
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      background-color: rgba(153, 0, 0, 0.9);
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .blood-type-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    .blood-type-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      padding: 30px;
+      width: 150px;
+      height: 150px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 10px;
+    }
+
+    .blood-type-box:hover {
+      transform: scale(1.1);
+      background-color: rgba(255, 0, 0, 0.7);
+    }
+
+    .blood-type-box h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .blood-type-box p {
+      font-size: 16px;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .main-button {
+      padding: 12px 25px;
+      background-color: #cc0000;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .main-button:hover {
+      background-color: #990000;
+    }
+
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <header>فصائل الدم وعدد الأكياس المتوفرة</header>
+
+  <main>
+    <div class="blood-type-container">
+      <div class="blood-type-box">
+        <h3>A+</h3>
+        <p>عدد الأكياس: 25</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>O+</h3>
+        <p>عدد الأكياس: 30</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>B+</h3>
+        <p>عدد الأكياس: 18</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>AB+</h3>
+        <p>عدد الأكياس: 12</p>
+      </div>
+
+      <div class="blood-type-box">
+        <h3>A-</h3>
+        <p>عدد الأكياس: 7</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>O-</h3>
+        <p>عدد الأكياس: 10</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>B-</h3>
+        <p>عدد الأكياس: 5</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>AB-</h3>
+        <p>عدد الأكياس: 3</p>
+      </div>
+
+      <div class="blood-type-box">
+        <h3>A</h3>
+        <p>عدد الأكياس: 15</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>O</h3>
+        <p>عدد الأكياس: 20</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>B</h3>
+        <p>عدد الأكياس: 8</p>
+      </div>
+      <div class="blood-type-box">
+        <h3>AB</h3>
+        <p>عدد الأكياس: 4</p>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <a href="index.html" class="main-button">عودة</a>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    const bloodDrops = [];
+
+    class Star {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 1.5;
+        this.alpha = Math.random();
+      }
+      update() {
+        this.alpha += (Math.random() - 0.5) * 0.05;
+        this.alpha = Math.max(0.3, Math.min(1, this.alpha));
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    class BloodDrop {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 200;
+        this.radius = Math.random() * 8 + 4;
+        this.speed = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y -= this.speed;
+        if (this.y < -this.radius) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 0, 0, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 150; i++) stars.push(new Star());
+    for (let i = 0; i < 100; i++) bloodDrops.push(new BloodDrop());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
+      for (let d of bloodDrops) { d.update(); d.draw(); }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تم استلام طلبك</title>
+  <style>
+    body {
+      background: #100000;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 50px;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .box {
+      background: rgba(28, 0, 0, 0.85);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+      display: inline-block;
+      max-width: 600px;
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      color: #ff3333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 30px;
+      background-color: #cc0000;
+      padding: 12px 25px;
+      color: white;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    a:hover {
+      background-color: #990000;
+    }
+  </style>
+</head>
+<body>
+
+<audio autoplay>
+  <source src="thanks.mp3" type="audio/mpeg">
+  متصفحك لا يدعم تشغيل الصوت.
+</audio>
+
+<canvas id="heartCanvas"></canvas>
+
+<div class="box">
+  <h1>شكرًا لتبرعك!</h1>
+  <p>تم استلام بياناتك بنجاح، وسيتواصل معك فريق بنك الدم في أقرب وقت.</p>
+  <p>نتمنى لك دوام الصحة والعافية ❤️</p>
+  <a href="index.html">العودة إلى الصفحة الرئيسية</a>
+  
+</div>
+
+<script>
+  const canvas = document.getElementById('heartCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const hearts = [];
+
+  class Heart {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = -20;
+      this.size = Math.random() * 15 + 10;
+      this.speed = Math.random() * 1.5 + 0.5;
+      this.alpha = Math.random() * 0.8 + 0.2;
+    }
+    update() {
+      this.y += this.speed;
+      if (this.y > canvas.height) this.reset();
+    }
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.scale(this.size / 20, this.size / 20);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(0, -3, -5, -15, -10, -10);
+      ctx.bezierCurveTo(-20, 0, 0, 20, 0, 20);
+      ctx.bezierCurveTo(0, 20, 20, 0, 10, -10);
+      ctx.bezierCurveTo(5, -15, 0, -3, 0, 0);
+      ctx.fillStyle = `rgba(255, 0, 0, ${this.alpha})`;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  for (let i = 0; i < 100; i++) {
+    hearts.push(new Heart());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hearts.forEach(h => {
+      h.update();
+      h.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+</body>
+</html>

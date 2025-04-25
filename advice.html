@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نصائح وفوائد التبرع بالدم</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: radial-gradient(ellipse at bottom, #200000 0%, #000000 100%);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      background-color: rgba(153, 0, 0, 0.9);
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .content {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #cc0000;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+
+    .back-button:hover {
+      background-color: #990000;
+    }
+
+    h2 {
+      color: #cc0000;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <header>
+    <h1>نصائح وفوائد التبرع بالدم</h1>
+  </header>
+
+  <div class="content">
+    <h2>فوائد التبرع بالدم</h2>
+    <ul>
+      <li>يساعد في الحفاظ على صحة القلب.</li>
+      <li>يقلل من خطر الإصابة بالسرطان.</li>
+      <li>يساعد في تجديد خلايا الدم.</li>
+      <li>يساهم في تحسين صحة الدم بشكل عام.</li>
+    </ul>
+
+    <h2>شروط التبرع بالدم</h2>
+    <ul>
+      <li>أن يكون عمرك بين 18 و 60 عامًا.</li>
+      <li>أن يكون وزنك لا يقل عن 50 كيلوغرامًا.</li>
+      <li>أن تكون حالتك الصحية جيدة.</li>
+      <li>أن لا تكون قد تبرعت بالدم في آخر 3 أشهر.</li>
+    </ul>
+
+    <h2>نصائح التبرع بالدم</h2>
+    <ul>
+      <li>لا تتبرع بالدم إذا كنت مريضًا أو تعاني من أعراض الأنفلونزا.</li>
+      <li>تجنب التبرع بالدم إذا كنت قد أجريت عملية جراحية مؤخرًا.</li>
+      <li>من المهم أن تكون مرتاحًا عند التبرع وأن تكون في حالة صحية جيدة.</li>
+    </ul>
+
+    <h2>نصائح قبل التبرع بالدم</h2>
+    <ul>
+      <li>تناول طعامًا غنيًا بالحديد (مثل اللحوم الحمراء، والسبانخ، والفاصوليا).</li>
+      <li>احصل على قسط كافٍ من النوم قبل التبرع.</li>
+      <li>شرب كمية كافية من الماء قبل التبرع.</li>
+      <li>تجنب تناول الكحول في اليوم الذي يسبق التبرع.</li>
+    </ul>
+
+    <h2>نصائح بعد التبرع بالدم</h2>
+    <ul>
+      <li>شرب الكثير من السوائل لتعويض ما فقدته من سوائل.</li>
+      <li>تناول طعامًا غنيًا بالحديد لتعويض الدم المفقود.</li>
+      <li>تجنب الأنشطة البدنية الشاقة لمدة 24 ساعة بعد التبرع.</li>
+      <li>احصل على قسط من الراحة بعد التبرع.</li>
+    </ul>
+
+    <a href="index.html" class="back-button">عودة إلى الصفحة الرئيسية</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    const bloodDrops = [];
+
+    class Star {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 1.5;
+        this.alpha = Math.random();
+      }
+      update() {
+        this.alpha += (Math.random() - 0.5) * 0.05;
+        this.alpha = Math.max(0.3, Math.min(1, this.alpha));
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    class BloodDrop {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 200;
+        this.radius = Math.random() * 8 + 4;
+        this.speed = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y -= this.speed;
+        if (this.y < -this.radius) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 0, 0, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 150; i++) stars.push(new Star());
+    for (let i = 0; i < 100; i++) bloodDrops.push(new BloodDrop());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
+      for (let d of bloodDrops) { d.update(); d.draw(); }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>

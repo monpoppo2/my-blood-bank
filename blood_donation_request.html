@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>فوائد التبرع بالدم - بنك الدم</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Tajawal', sans-serif;
+      overflow: hidden;
+    }
+
+    /* خلفية النجوم الصغيرة */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: -2;
+      animation: star-glow 1.5s infinite alternate;
+    }
+
+    /* تأثير اللمعان للنجوم */
+    @keyframes star-glow {
+      0% {
+        opacity: 0.5;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* فقاعات الدم */
+    .bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      background-color: rgba(200, 0, 0, 0.6);
+      border-radius: 50%;
+      animation: rise 5s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-1000px) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* محتوى الصفحة */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding-top: 100px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ff4d4d;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    p {
+      font-size: 20px;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+
+    .list {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      list-style-type: square;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    .buttons a {
+      padding: 15px 30px;
+      background-color: #e60000;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+      transition: 0.3s ease;
+    }
+
+    .buttons a:hover {
+      background-color: #b30000;
+      transform: scale(1.05);
+    }
+
+    .back-button {
+      display: block;
+      width: fit-content;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #cc0000;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      background-color: #990000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars"></div>
+
+  <div class="bubbles" id="bubble-container"></div>
+
+  <div class="container">
+    <h1>فوائد التبرع بالدم</h1>
+    <p>التبرع بالدم هو عمل نبيل يمكن أن ينقذ العديد من الأرواح. إليك بعض الفوائد التي يمكن أن تعود عليك عند التبرع بالدم:</p>
+
+    <ul class="list">
+      <li>يساعد التبرع بالدم في تحسين صحتك العامة من خلال تحفيز الدورة الدموية وتجديد خلايا الدم.</li>
+      <li>يساعد التبرع المنتظم في الوقاية من أمراض القلب والأوعية الدموية.</li>
+      <li>يساهم في تقليل مستويات الحديد الزائدة في الجسم، مما يقلل من خطر الإصابة بالأمراض المرتبطة بالحديد.</li>
+      <li>التبرع بالدم يعزز شعورك بالمسؤولية الاجتماعية ويجعل منك شخصاً إيجابياً يؤثر في مجتمعك.</li>
+      <li>يمكن أن يحسن التبرع بالدم من الحالة النفسية والمزاجية للشخص المتبرع، حيث يشعر الشخص بالسعادة لمساعدة الآخرين.</li>
+    </ul>
+
+    <div class="buttons">
+      <a href="donat.html">تبرع الآن</a>
+    </div>
+
+    <a href="index.html" class="back-button">العودة إلى الصفحة الرئيسية</a>
+  </div>
+
+  <script>
+    // إنشاء فقاعات الدم عشوائية
+    const container = document.getElementById('bubble-container');
+    for (let i = 0; i < 50; i++) {
+      const bubble = document.createElement('div');
+      const size = Math.random() * 40 + 10;
+      bubble.classList.add('bubble');
+      bubble.style.width = size + 'px';
+      bubble.style.height = size + 'px';
+      bubble.style.left = Math.random() * 100 + '%';
+      bubble.style.animationDuration = (Math.random() * 5 + 2) + 's'; // سرعة الأمطار بين 2 و 7 ثوانٍ
+      container.appendChild(bubble);
+    }
+  </script>
+
+</body>
+</html>

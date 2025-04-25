@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الدخول - بنك الدم</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: radial-gradient(ellipse at bottom, #200000 0%, #000000 100%);
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      background-color: rgba(153, 0, 0, 0.9);
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .input-field {
+      margin: 10px 0;
+      padding: 12px;
+      width: 300px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .input-field::placeholder {
+      color: #ccc;
+    }
+
+    .login-button, .register-button, .home-button {
+      padding: 12px 25px;
+      background-color: #cc0000;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 20px;
+      width: 300px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    .login-button:hover, .register-button:hover, .home-button:hover {
+      background-color: #990000;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+    }
+
+    .register-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .register-link a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* تنسيق أيقونة العين */
+    .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+    }
+
+    .password-container {
+      position: relative;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <header>تسجيل الدخول - بنك الدم</header>
+
+  <main>
+    <div class="login-form">
+      <input type="text" class="input-field" id="username" placeholder="اسم المستخدم" />
+      <div class="password-container">
+        <input type="password" class="input-field" id="password" placeholder="كلمة المرور" />
+        <span class="eye-icon" onclick="togglePassword()">👁️</span>
+      </div>
+      
+      <button class="login-button" onclick="login()">تسجيل الدخول</button>
+      <button class="register-button" onclick="window.location.href='register.html'">إنشاء حساب جديد</button>
+      <button class="home-button" onclick="goToHomePage()">الصفحة الرئيسية</button>
+      <div class="register-link">
+        <p>ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    const bloodDrops = [];
+
+    class Star {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 1.5;
+        this.alpha = Math.random();
+      }
+      update() {
+        this.alpha += (Math.random() - 0.5) * 0.05;
+        this.alpha = Math.max(0.3, Math.min(1, this.alpha));
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    class BloodDrop {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 200;
+        this.radius = Math.random() * 8 + 4;
+        this.speed = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y -= this.speed;
+        if (this.y < -this.radius) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 0, 0, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 150; i++) stars.push(new Star());
+    for (let i = 0; i < 100; i++) bloodDrops.push(new BloodDrop());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
+      for (let d of bloodDrops) { d.update(); d.draw(); }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // التحقق من البيانات
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // مثال على التحقق من البيانات
+      if (username === 'admin' && password === '1234') {
+        window.location.href = 'index.html';  // رابط الصفحة الرئيسية
+      } else {
+        alert('البيانات غير صحيحة');
+      }
+    }
+
+    // التوجيه إلى الصفحة الرئيسية
+    function goToHomePage() {
+      window.location.href = 'index.html';
+    }
+
+    // وظيفة إخفاء وإظهار كلمة السر
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const type = passwordField.type === "password" ? "text" : "password";
+      passwordField.type = type;
+    }
+  </script>
+</body>
+</html>

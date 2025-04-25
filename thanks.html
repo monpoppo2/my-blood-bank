@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شكرًا لتواصلك - بنك الدم</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: black;
+      color: #fff;
+      text-align: center;
+      padding-top: 50px;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .message {
+      font-size: 28px;
+      margin-bottom: 30px;
+      padding: 20px 40px;
+      background-color: rgba(204, 0, 0, 0.3);
+      border: 2px solid #ff0000;
+      border-radius: 15px;
+      display: inline-block;
+      animation: moveText 6s linear infinite;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000, 0 0 30px #ff3333;
+    }
+
+    @keyframes moveText {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .button {
+      padding: 15px 30px;
+      background-color: #cc0000;
+      border: none;
+      color: white;
+      font-size: 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      transition: background-color 0.3s ease;
+      animation: slideUp 2s ease-out;
+    }
+
+    .button:hover {
+      background-color: #990000;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="message">شكرًا لتواصلك معنا! تم إرسال رسالتك بنجاح.</div>
+  <br>
+  <a href="index.html" class="button">العودة إلى الصفحة الرئيسية</a>
+
+  <script>
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    const bloodDrops = [];
+
+    class Star {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = Math.random() * 1.5;
+        this.alpha = Math.random();
+      }
+      update() {
+        this.alpha += (Math.random() - 0.5) * 0.05;
+        this.alpha = Math.max(0.3, Math.min(1, this.alpha));
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    class BloodDrop {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -Math.random() * canvas.height;
+        this.radius = Math.random() * 6 + 4;
+        this.speed = Math.random() * 1.5 + 0.5;
+        this.alpha = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y += this.speed;
+        if (this.y > canvas.height + this.radius) this.reset();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 0, 0, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 150; i++) stars.push(new Star());
+    for (let i = 0; i < 100; i++) bloodDrops.push(new BloodDrop());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
+      for (let d of bloodDrops) { d.update(); d.draw(); }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
